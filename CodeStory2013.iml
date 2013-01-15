@@ -20,6 +20,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="org.apache.tomcat:servlet-api:6.0.28" level="project" />
+    <orderEntry type="library" name="com.google.guava:guava-gwt:14.0-rc1" level="project" />
   </component>
 </module>
 

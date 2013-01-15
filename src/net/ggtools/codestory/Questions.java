@@ -5,21 +5,26 @@ import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
- * User: cele
+ * User: Christophe Labouisse
  * Date: 15/01/13
  * Time: 14:43
- * To change this template use File | Settings | File Templates.
  */
 public enum Questions {
 
-    UNKNOWN(""),
-    HAPPY("Es tu heureux de participer(OUI/NON)"),
-    EMAIL_ADDRESS("Quelle est ton adresse email");
+    UNKNOWN("", "Unknown question"),
+    FIRST_MD("As tu bien recu le premier enonce(OUI/NON)", "OUI"),
+    ALWAYS_YES("Est ce que tu reponds toujours oui(OUI/NON)", "NON"),
+    MD_POST("Es tu pret a recevoir une enonce au format markdown par http post(OUI/NON)", "OUI"),
+    HAPPY("Es tu heureux de participer(OUI/NON)", "OUI"),
+    MAILING_LIST("Es tu abonne a la mailing list(OUI/NON)", "OUI"),
+    EMAIL_ADDRESS("Quelle est ton adresse email", "consulting@labouisse.com");
 
-    private String question;
+    private final String question;
+    private final String answer;
 
-    Questions(String question) {
+    Questions(String question, String answer) {
         this.question = question;
+        this.answer = answer;
     }
 
     public static Questions lookup(String question) {
@@ -29,5 +34,9 @@ public enum Questions {
             }
         }
         return UNKNOWN;
+    }
+
+    public String getAnswer() {
+        return answer;
     }
 }
