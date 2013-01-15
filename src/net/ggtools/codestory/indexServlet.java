@@ -10,17 +10,23 @@ import java.io.IOException;
 public class indexServlet extends javax.servlet.http.HttpServlet {
     protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
         String q = request.getParameter("q");
-        Questions question = Questions.lookup(q);
-        getServletContext().log("Question: " + q + " -> " + question);
-        switch (question) {
-            case EMAIL_ADDRESS:
-                response.getOutputStream().println("consulting@labouisse.com");
-                break;
+        if (q != null) {
+            Questions question = Questions.lookup(q);
+            getServletContext().log("Question: " + q + " -> " + question);
+            switch (question) {
+                case EMAIL_ADDRESS:
+                    response.getOutputStream().println("consulting@labouisse.com");
+                    break;
 
-            default:
-                getServletContext().log("Unknown question: '" + q + "'");
-                response.getOutputStream().println("Unknown question " + q);
-                break;
+                case HAPPY:
+                    response.getOutputStream().println("OUI");
+                    break;
+
+                default:
+                    getServletContext().log("Unknown question: '" + q + "'");
+                    response.getOutputStream().println("Unknown question " + q);
+                    break;
+            }
         }
     }
 }
