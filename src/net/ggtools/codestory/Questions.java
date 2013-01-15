@@ -13,6 +13,7 @@ import java.util.Map;
 public enum Questions {
 
     UNKNOWN(""),
+    HAPPY("Es tu heureux de participer(OUI/NON)"),
     EMAIL_ADDRESS("Quelle est ton adresse email");
 
     private String question;
