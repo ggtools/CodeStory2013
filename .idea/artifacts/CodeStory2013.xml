@@ -7,6 +7,9 @@
         <element id="directory" name="classes">
           <element id="module-output" name="CodeStory2013" />
         </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="com.google.guava:guava-gwt:14.0-rc1" />
+        </element>
       </element>
     </root>
   </artifact>
