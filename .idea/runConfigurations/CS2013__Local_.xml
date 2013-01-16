@@ -2,7 +2,7 @@
   <configuration default="false" name="CS2013 (Local)" type="CBConfiguration" factoryName="Local">
     <option name="UPDATING_POLICY" value="restart-server" />
     <deployment>
-      <artifact name="CodeStory2013:war">
+      <artifact name="CodeStory2013">
         <settings />
       </artifact>
     </deployment>
@@ -31,7 +31,7 @@
     </ConfigurationWrapper>
     <method>
       <option name="BuildArtifacts" enabled="true">
-        <artifact name="CodeStory2013:war" />
+        <artifact name="CodeStory2013" />
       </option>
     </method>
   </configuration>
