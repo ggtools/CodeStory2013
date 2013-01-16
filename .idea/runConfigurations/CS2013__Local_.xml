@@ -1,0 +1,38 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="CS2013 (Local)" type="CBConfiguration" factoryName="Local">
+    <option name="UPDATING_POLICY" value="restart-server" />
+    <deployment>
+      <artifact name="CodeStory2013:war">
+        <settings />
+      </artifact>
+    </deployment>
+    <server-settings>
+      <option name="HTTP_PORT_X" value="8080" />
+      <option name="JNDI_PORT" value="1099" />
+      <option name="USERNAME" value="" />
+      <option name="PASSWORD" value="" />
+    </server-settings>
+    <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+    <RunnerSettings RunnerId="Run" />
+    <ConfigurationWrapper VM_VAR="" RunnerId="Run">
+      <option name="USE_ENV_VARIABLES" value="true" />
+      <STARTUP>
+        <option name="USE_DEFAULT" value="true" />
+        <option name="SCRIPT" value="" />
+        <option name="VM_PARAMETERS" value="" />
+        <option name="PROGRAM_PARAMETERS" value="" />
+      </STARTUP>
+      <SHUTDOWN>
+        <option name="USE_DEFAULT" value="true" />
+        <option name="SCRIPT" value="" />
+        <option name="VM_PARAMETERS" value="" />
+        <option name="PROGRAM_PARAMETERS" value="" />
+      </SHUTDOWN>
+    </ConfigurationWrapper>
+    <method>
+      <option name="BuildArtifacts" enabled="true">
+        <artifact name="CodeStory2013:war" />
+      </option>
+    </method>
+  </configuration>
+</component>
