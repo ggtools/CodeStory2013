@@ -24,25 +24,31 @@ public class indexServlet extends javax.servlet.http.HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         resolvers.add(new QuestionResolver());
+        resolvers.add(new ScalaskelResolver());
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ServletInputStream inputStream = req.getInputStream();
         byte[] bytes = ByteStreams.toByteArray(inputStream);
-        getServletContext().log(new String(bytes));
+        log(new String(bytes));
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        getServletContext().log("Dispatch: '" + request.getServletPath() + "' " + request.getParameterMap() + "'");
+        log("Dispatch: '" + request.getServletPath() + "' " + request.getParameterMap() + "'");
         String value = "Unknown request";
-        for (Resolver resolver : resolvers) {
-            if (resolver.match(request)) {
-                value = resolver.solve(request);
-                break;
+        try {
+            for (Resolver resolver : resolvers) {
+                log("Trying " + resolver);
+                if (resolver.match(request)) {
+                    value = resolver.solve(request);
+                    break;
+                }
             }
+            response.getOutputStream().println(value);
+        } catch (ResolverException e) {
+            log("Cannot solve", e);
         }
-        response.getOutputStream().println(value);
     }
 }
