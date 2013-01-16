@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" name="CodeStory2013:war exploded">
+  <artifact type="exploded-war" name="CodeStory2013 exploded">
     <output-path>$PROJECT_DIR$/target/CodeStory2013</output-path>
     <root id="root">
       <element id="javaee-facet-resources" facet="CodeStory2013/web/Web" />

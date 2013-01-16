@@ -3,9 +3,9 @@
     <option name="PORT" value="80" />
     <option name="LOCAL" value="false" />
     <option name="OPEN_IN_BROWSER_URL" value="http://codestory2013.ggtools.cloudbees.net/" />
-    <option name="UPDATING_POLICY" value="hot-swap-classes" />
+    <option name="UPDATING_POLICY" value="redeploy-artifacts" />
     <deployment>
-      <artifact name="CodeStory2013:war">
+      <artifact name="CodeStory2013">
         <settings />
       </artifact>
     </deployment>
@@ -17,7 +17,7 @@
     <ConfigurationWrapper RunnerId="Run" />
     <method>
       <option name="BuildArtifacts" enabled="true">
-        <artifact name="CodeStory2013:war" />
+        <artifact name="CodeStory2013" />
       </option>
     </method>
   </configuration>
