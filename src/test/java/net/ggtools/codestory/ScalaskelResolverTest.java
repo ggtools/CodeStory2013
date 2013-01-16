@@ -1,8 +1,6 @@
 package net.ggtools.codestory;
 
 import org.codehaus.jackson.map.ObjectMapper;
-import org.hamcrest.CoreMatchers;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -10,10 +8,12 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
+import static net.ggtools.codestory.ScalaskelResolver.COIN;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
@@ -29,11 +29,6 @@ public class ScalaskelResolverTest {
     private ScalaskelResolver resolver = new ScalaskelResolver();
     private ObjectMapper mapper = new ObjectMapper();
 
-    @Before
-    public void setUp() throws Exception {
-
-    }
-
     @Test
     public void solve1GD() throws Exception {
         Mockito.when(request.getServletPath()).thenReturn("/scalaskel/change/1");
@@ -48,10 +43,24 @@ public class ScalaskelResolverTest {
         assertResponseOk(response, "[ {\"foo\": 7}, {\"bar\": 1} ]");
     }
 
+    @Test
+    public void computeChange() throws Exception {
+        for (int value = 0; value <= 100; value++) {
+            List<Map<COIN, Integer>> list = resolver.computeChange(COIN.baz, value);
+            for (Map<COIN, Integer> change : list) {
+                int sum = 0;
+                for (Map.Entry<COIN, Integer> entry : change.entrySet()) {
+                    sum += entry.getValue() * entry.getKey().getValue();
+                }
+                assertThat("Change: " + change, sum, equalTo(value));
+            }
+        }
+    }
+
     private void assertResponseOk(String response, String expected) throws IOException {
         assertThat(response, notNullValue());
         List refValue = mapper.readValue(expected, List.class);
         List respValue = mapper.readValue(response, List.class);
-        assertThat(respValue, CoreMatchers.equalTo(refValue));
+        assertThat(respValue, equalTo(refValue));
     }
 }
