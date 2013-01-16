@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" name="CodeStory2013 exploded">
+  <artifact type="exploded-war" name="CodeStory2013:war exploded">
     <output-path>$PROJECT_DIR$/target/CodeStory2013</output-path>
     <root id="root">
       <element id="javaee-facet-resources" facet="CodeStory2013/web/Web" />
@@ -10,6 +10,7 @@
         <element id="directory" name="lib">
           <element id="library" level="project" name="Maven: com.google.guava:guava:13.0.1" />
           <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.9.11" />
+          <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-core-asl:1.9.11" />
         </element>
       </element>
     </root>

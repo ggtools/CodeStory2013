@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class QuestionResolver implements Resolver {
     @Override
-    public String resolve(HttpServletRequest request) {
+    public String solve(HttpServletRequest request) {
         String q = request.getParameter("q");
         QUESTION question = QUESTION.lookup(q);
         return question.getAnswer();

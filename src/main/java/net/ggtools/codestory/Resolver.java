@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
  * Time: 08:45
  */
 public interface Resolver {
-    String resolve(HttpServletRequest request);
+    String solve(HttpServletRequest request);
 
     boolean match(HttpServletRequest request);
 }
