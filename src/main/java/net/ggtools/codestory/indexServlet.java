@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class indexServlet extends javax.servlet.http.HttpServlet {
 
-    private List<Resolver> resolvers = new ArrayList<>();
+    private List<Resolver> resolvers = new ArrayList<Resolver>();
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -39,7 +39,7 @@ public class indexServlet extends javax.servlet.http.HttpServlet {
         String value = "Unknown request";
         for (Resolver resolver : resolvers) {
             if (resolver.match(request)) {
-                value = resolver.resolve(request);
+                value = resolver.solve(request);
                 break;
             }
         }
