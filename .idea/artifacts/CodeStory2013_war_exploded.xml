@@ -1,14 +1,15 @@
 <component name="ArtifactManager">
-  <artifact type="war" name="CodeStory2013">
-    <output-path>$PROJECT_DIR$/out/artifacts/CodeStory2013</output-path>
-    <root id="archive" name="CodeStory2013_war.war">
+  <artifact type="exploded-war" name="CodeStory2013:war exploded">
+    <output-path>$PROJECT_DIR$/target/CodeStory2013</output-path>
+    <root id="root">
       <element id="javaee-facet-resources" facet="CodeStory2013/web/Web" />
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="CodeStory2013" />
         </element>
         <element id="directory" name="lib">
-          <element id="library" level="project" name="com.google.guava:guava-gwt:14.0-rc1" />
+          <element id="library" level="project" name="Maven: javax.servlet:servlet-api:2.5" />
+          <element id="library" level="project" name="Maven: com.google.guava:guava:13.0.1" />
         </element>
       </element>
     </root>
