@@ -1,12 +1,10 @@
 package net.ggtools.codestory;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-import lombok.extern.slf4j.Slf4j;
-
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * User: Christophe Labouisse
@@ -15,12 +13,11 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class ScalaskelResolver implements Resolver {
 
-    //Foo vaut 1 cent, le Bar vaut 7 cents, le Qix vaut 11 cents et le Baz vaut 21 cents.
-    private static Coin[] coins = {new Coin("Baz", 21), new Coin("Qix", 11), new Coin("Bar", 7), new Coin("Foo", 1)};
-
     @Override
     public String solve(HttpServletRequest request) {
-
+        String path = request.getServletPath();
+        int value = Integer.valueOf(path.substring(path.lastIndexOf('/') + 1));
+        // List<Map<COIN, Integer>> results = computeChange(COIN.Baz.ordinal(), value);
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
@@ -29,12 +26,13 @@ public class ScalaskelResolver implements Resolver {
         return request.getServletPath().startsWith("/scalaskel/change/");
     }
 
-    @Getter
-    @NoArgsConstructor
-    @ToString
-    @AllArgsConstructor
-    private static class Coin {
-        private String name;
-        private int value;
+    private enum COIN {
+        //Foo vaut 1 cent, le Bar vaut 7 cents, le Qix vaut 11 cents et le Baz vaut 21 cents.
+        Foo(1), Bar(7), Qix(11), Baz(21);
+        private final int value;
+
+        private COIN(int value) {
+            this.value = value;
+        }
     }
 }
