@@ -43,8 +43,8 @@ public class indexServlet extends javax.servlet.http.HttpServlet {
         try {
             for (Resolver resolver : resolvers) {
                 log("Trying " + resolver);
-                if (resolver.match(request)) {
-                    value = resolver.solve(request);
+                value = resolver.solve(request);
+                if (value != null) {
                     break;
                 }
             }

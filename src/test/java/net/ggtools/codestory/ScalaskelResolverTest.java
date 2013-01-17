@@ -15,6 +15,7 @@ import java.util.Map;
 import static net.ggtools.codestory.ScalaskelResolver.COIN;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -28,6 +29,13 @@ public class ScalaskelResolverTest {
     private HttpServletRequest request;
     private ScalaskelResolver resolver = new ScalaskelResolver();
     private ObjectMapper mapper = new ObjectMapper();
+
+    @Test
+    public void solveBadRequest() throws Exception {
+        Mockito.when(request.getServletPath()).thenReturn("/ga/bu/zo");
+        String response = resolver.solve(request);
+        assertThat(response, nullValue());
+    }
 
     @Test
     public void solve1GD() throws Exception {

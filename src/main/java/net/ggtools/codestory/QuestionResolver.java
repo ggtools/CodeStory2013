@@ -15,11 +15,6 @@ public class QuestionResolver implements Resolver {
         return question.getAnswer();
     }
 
-    @Override
-    public boolean match(HttpServletRequest request) {
-        return "/".equals(request.getServletPath()) && request.getParameter("q") != null;
-    }
-
     private enum QUESTION {
 
         ONE_PLUS_ONE("1 1", "2"),
@@ -29,7 +24,7 @@ public class QuestionResolver implements Resolver {
         HAPPY("Es tu heureux de participer(OUI/NON)", "OUI"),
         MAILING_LIST("Es tu abonne a la mailing list(OUI/NON)", "OUI"),
         EMAIL_ADDRESS("Quelle est ton adresse email", "consulting@labouisse.com"),
-        UNKNOWN("", "Unknown question");
+        UNKNOWN("",null);
         private final String question;
         private final String answer;
 
