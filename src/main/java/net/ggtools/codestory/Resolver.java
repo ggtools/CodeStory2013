@@ -9,6 +9,4 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface Resolver {
     String solve(HttpServletRequest request) throws ResolverException;
-
-    boolean match(HttpServletRequest request);
 }

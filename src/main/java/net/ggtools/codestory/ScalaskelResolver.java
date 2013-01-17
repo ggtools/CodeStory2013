@@ -27,6 +27,9 @@ public class ScalaskelResolver implements Resolver {
     @Override
     public String solve(HttpServletRequest request) throws ResolverException {
         String path = request.getServletPath();
+        if (!path.startsWith("/scalaskel/change/")) {
+            return null;
+        }
         int value = Integer.valueOf(path.substring(path.lastIndexOf('/') + 1));
         List<Map<COIN, Integer>> results = computeChange(COIN.baz, value);
         try {
@@ -52,11 +55,6 @@ public class ScalaskelResolver implements Resolver {
             }
         }
         return results;
-    }
-
-    @Override
-    public boolean match(HttpServletRequest request) {
-        return request.getServletPath().startsWith("/scalaskel/change/");
     }
 
     protected enum COIN {
