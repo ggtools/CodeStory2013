@@ -9,7 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * User: Christophe Labouisse
@@ -36,7 +38,7 @@ public class indexServlet extends javax.servlet.http.HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        log("Dispatch: '" + request.getServletPath() + "' " + request.getParameterMap() + "'");
+        logRequest(request);
         String value = "Unknown request";
         try {
             for (Resolver resolver : resolvers) {
@@ -50,5 +52,15 @@ public class indexServlet extends javax.servlet.http.HttpServlet {
         } catch (ResolverException e) {
             log("Cannot solve", e);
         }
+    }
+
+    private void logRequest(HttpServletRequest request) {
+        StringBuilder stringBuilder = new StringBuilder("Dispatch: '").append(request.getServletPath()).append("', params = {");
+        Map<String, String[]> parameterMap = request.getParameterMap();
+        for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
+            stringBuilder.append(entry.getKey()).append(" = ").append(Arrays.toString(entry.getValue()));
+        }
+        stringBuilder.append("}");
+        log(stringBuilder.toString());
     }
 }
