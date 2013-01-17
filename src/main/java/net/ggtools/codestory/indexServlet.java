@@ -27,6 +27,7 @@ public class indexServlet extends javax.servlet.http.HttpServlet {
         super.init(config);
         resolvers.add(new QuestionResolver());
         resolvers.add(new ScalaskelResolver());
+        resolvers.add(new CalculatorResolver());
     }
 
     @Override

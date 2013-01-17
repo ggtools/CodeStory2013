@@ -2,6 +2,7 @@ package net.ggtools.codestory;
 
 import de.congrace.exp4j.Calculable;
 import de.congrace.exp4j.ExpressionBuilder;
+import groovy.lang.GroovyShell;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.DecimalFormat;
@@ -23,10 +24,13 @@ public class CalculatorResolver implements Resolver {
 
         String expr = q.replace(',', '.').replaceAll(" ", "+");
         try {
-            Calculable calculable = new ExpressionBuilder(expr).build();
             DecimalFormat format = new DecimalFormat("0.##", new DecimalFormatSymbols(Locale.FRENCH));
-            return format.format(calculable.calculate());
+            GroovyShell shell = new GroovyShell();
+            return format.format(shell.evaluate(expr));
+//            Calculable calculable = new ExpressionBuilder(expr).build();
+//            return format.format(calculable.calculate());
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }

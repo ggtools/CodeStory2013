@@ -17,7 +17,6 @@ public class QuestionResolver implements Resolver {
 
     private enum QUESTION {
 
-        ONE_PLUS_ONE("1 1", "2"),
         FIRST_MD("As tu bien recu le premier enonce(OUI/NON)", "OUI"),
         ALWAYS_YES("Est ce que tu reponds toujours oui(OUI/NON)", "NON"),
         MD_POST("Es tu pret a recevoir une enonce au format markdown par http post(OUI/NON)", "OUI"),
