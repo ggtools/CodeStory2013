@@ -26,7 +26,6 @@ public class CalculatorResolver implements Resolver {
             GroovyShell shell = new GroovyShell();
             return format.format(shell.evaluate(expr));
         } catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }

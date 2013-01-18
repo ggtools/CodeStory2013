@@ -22,19 +22,33 @@ public class indexServlet extends javax.servlet.http.HttpServlet {
 
     private List<Resolver> resolvers = new ArrayList<Resolver>();
 
+    private OptimizeResolver optimizeResolver;
+
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         resolvers.add(new QuestionResolver());
         resolvers.add(new ScalaskelResolver());
         resolvers.add(new CalculatorResolver());
+        optimizeResolver = new OptimizeResolver();
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ServletInputStream inputStream = req.getInputStream();
-        byte[] bytes = ByteStreams.toByteArray(inputStream);
-        log(new String(bytes));
+    protected void doPost(HttpServletRequest request, HttpServletResponse resp) throws ServletException, IOException {
+        ServletInputStream inputStream = request.getInputStream();
+        String contents = new String(ByteStreams.toByteArray(inputStream));
+        log(contents);
+        String servletPath = request.getServletPath();
+        if (servletPath.startsWith("/jajascript/optimize")) {
+
+        }
+        /*
+        88.190.22.96 - - [18/Jan/2013:09:40:26 +0000] "POST /enonce/2 HTTP/1.1" 200 25 "-" "curl/7.22.0 (x86_64-pc-linux-gnu) libcurl/7.22.0 OpenSSL/1.0.1 zlib/1.2.3.4 libidn/1.23 librtmp/2.3"
+88.190.22.96 - - [18/Jan/2013:09:40:26 +0000] "GET /?q=As+tu+bien+recu+le+second+enonce(OUI/NON) HTTP/1.1" 200 6 "-" "curl/7.22.0 (x86_64-pc-linux-gnu) libcurl/7.22.0 OpenSSL/1.0.1 zlib/1.2.3.4 libidn/1.23 librtmp/2.3"
+88.190.22.96 - - [18/Jan/2013:09:50:22 +0000] "GET /?q=As+tu+bien+recu+le+second+enonce(OUI/NON) HTTP/1.1" 200 5 "-" "curl/7.22.0 (x86_64-pc-linux-gnu) libcurl/7.22.0 OpenSSL/1.0.1 zlib/1.2.3.4 libidn/1.23 librtmp/2.3"
+88.190.22.96 - - [18/Jan/2013:09:50:23 +0000] "POST /jajascript/optimize HTTP/1.1" 200 0 "-" "curl/7.22.0 (x86_64-pc-linux-gnu) libcurl/7.22.0 OpenSSL/1.0.1 zlib/1.2.3.4 libidn/1.23 librtmp/2.3"
+
+         */
     }
 
     @Override
