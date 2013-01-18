@@ -1,7 +1,5 @@
 package net.ggtools.codestory;
 
-import de.congrace.exp4j.Calculable;
-import de.congrace.exp4j.ExpressionBuilder;
 import groovy.lang.GroovyShell;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,8 +25,6 @@ public class CalculatorResolver implements Resolver {
             DecimalFormat format = new DecimalFormat("0.##", new DecimalFormatSymbols(Locale.FRENCH));
             GroovyShell shell = new GroovyShell();
             return format.format(shell.evaluate(expr));
-//            Calculable calculable = new ExpressionBuilder(expr).build();
-//            return format.format(calculable.calculate());
         } catch (Exception e) {
             e.printStackTrace();
             return null;
