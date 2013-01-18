@@ -39,6 +39,14 @@ public class indexServlet extends javax.servlet.http.HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String servletPath = request.getServletPath();
+
+        // Exclude some paths from processing.
+        if (servletPath.startsWith("/favicon") || servletPath.startsWith("/_stax/")) {
+            response.setStatus(404);
+            return;
+        }
+
         logRequest(request);
         String value = "Unknown request";
         try {

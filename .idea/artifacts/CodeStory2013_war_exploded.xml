@@ -11,14 +11,13 @@
           <element id="library" level="project" name="Maven: com.google.guava:guava:13.0.1" />
           <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.9.11" />
           <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-core-asl:1.9.11" />
-          <element id="library" level="project" name="Maven: de.congrace:exp4j:0.3.8" />
-          <element id="library" level="project" name="Maven: org.codehaus.groovy:groovy:1.8.3" />
+          <element id="library" level="project" name="Maven: org.codehaus.groovy:groovy:2.0.6" />
           <element id="library" level="project" name="Maven: antlr:antlr:2.7.7" />
-          <element id="library" level="project" name="Maven: asm:asm:3.2" />
-          <element id="library" level="project" name="Maven: asm:asm-commons:3.2" />
-          <element id="library" level="project" name="Maven: asm:asm-tree:3.2" />
-          <element id="library" level="project" name="Maven: asm:asm-util:3.2" />
-          <element id="library" level="project" name="Maven: asm:asm-analysis:3.2" />
+          <element id="library" level="project" name="Maven: org.ow2.asm:asm-tree:4.0" />
+          <element id="library" level="project" name="Maven: org.ow2.asm:asm:4.0" />
+          <element id="library" level="project" name="Maven: org.ow2.asm:asm-commons:4.0" />
+          <element id="library" level="project" name="Maven: org.ow2.asm:asm-util:4.0" />
+          <element id="library" level="project" name="Maven: org.ow2.asm:asm-analysis:4.0" />
         </element>
       </element>
     </root>
