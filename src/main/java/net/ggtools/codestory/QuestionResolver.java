@@ -25,7 +25,7 @@ public class QuestionResolver implements Resolver {
         HAPPY("Es tu heureux de participer(OUI/NON)", "OUI"),
         MAILING_LIST("Es tu abonne a la mailing list(OUI/NON)", "OUI"),
         EMAIL_ADDRESS("Quelle est ton adresse email", "consulting@labouisse.com"),
-        UNKNOWN("",null);
+        UNKNOWN("", null);
         private final String question;
         private final String answer;
 

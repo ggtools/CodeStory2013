@@ -7,7 +7,6 @@ import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * User: Christophe Labouisse
@@ -27,8 +26,8 @@ public class JsonEquals extends TypeSafeMatcher<String> {
         if (reference == null && other == null) return true;
         if (other == null) return false;
         try {
-            List refValue = mapper.readValue(reference, List.class);
-            List respValue = mapper.readValue(other, List.class);
+            Object refValue = mapper.readValue(reference, Object.class);
+            Object respValue = mapper.readValue(other, Object.class);
             return refValue.equals(respValue);
         } catch (IOException e) {
             e.printStackTrace();
