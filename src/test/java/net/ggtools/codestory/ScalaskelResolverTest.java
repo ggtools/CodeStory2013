@@ -8,13 +8,12 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import static net.ggtools.codestory.JsonEquals.jsonEquals;
 import static net.ggtools.codestory.ScalaskelResolver.COIN;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
@@ -41,14 +40,14 @@ public class ScalaskelResolverTest {
     public void solve1GD() throws Exception {
         Mockito.when(request.getServletPath()).thenReturn("/scalaskel/change/1");
         String response = resolver.solve(request);
-        assertResponseOk(response, "[{\"foo\": 1}]");
+        assertThat(response, jsonEquals("[{\"foo\": 1}]"));
     }
 
     @Test
     public void solve7GD() throws Exception {
         Mockito.when(request.getServletPath()).thenReturn("/scalaskel/change/7");
         String response = resolver.solve(request);
-        assertResponseOk(response, "[ {\"foo\": 7}, {\"bar\": 1} ]");
+        assertThat(response, jsonEquals("[ {\"foo\": 7}, {\"bar\": 1} ]"));
     }
 
     @Test
@@ -63,12 +62,5 @@ public class ScalaskelResolverTest {
                 assertThat("Change: " + change, sum, equalTo(value));
             }
         }
-    }
-
-    private void assertResponseOk(String response, String expected) throws IOException {
-        assertThat(response, notNullValue());
-        List refValue = mapper.readValue(expected, List.class);
-        List respValue = mapper.readValue(response, List.class);
-        assertThat(respValue, equalTo(refValue));
     }
 }
