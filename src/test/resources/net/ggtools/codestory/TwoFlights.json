@@ -1,0 +1,14 @@
+[
+    {
+        "VOL": "AF1",
+        "DEPART": 0,
+        "DUREE": 1,
+        "PRIX": 10
+    },
+    {
+        "VOL": "AF2",
+        "DEPART": 1,
+        "DUREE": 1,
+        "PRIX": 10
+    }
+]

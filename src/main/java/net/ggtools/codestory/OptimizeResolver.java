@@ -3,10 +3,9 @@ package net.ggtools.codestory;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import com.google.common.base.Stopwatch;
+import com.google.common.io.ByteStreams;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -21,10 +20,25 @@ import java.util.*;
 @Slf4j
 public class OptimizeResolver {
     private static final Plan EMPTY_PLAN = new Plan(0, Collections.<Flight>emptyList());
+
     private ObjectMapper mapper = new ObjectMapper();
 
-    public Plan computePlan(Flight[] flights) {
-        OptimizeResolver.log.info("Processing {}", Arrays.toString(flights));
+    public String solve(InputStream jsonInputStream) {
+        try {
+            Flight[] flights = getFlights(jsonInputStream);
+            Stopwatch stopwatch = new Stopwatch().start();
+            Plan plan = computePlan(flights);
+            stopwatch.stop(); // optional
+            log.info("Computed plan for {} flights in {}", flights.length, stopwatch);
+            return plan2Json(plan);
+        } catch (IOException e) {
+            log.error("Cannot parse input stream", e);
+        }
+        return null;
+
+    }
+
+    Plan computePlan(Flight[] flights) {
         Plan plan = null;
         for (int i = 0; i < flights.length; i++) {
             Flight current = flights[i];
@@ -58,15 +72,10 @@ public class OptimizeResolver {
         return plan;
     }
 
-    public String solve(InputStream jsonInputStream) {
-        try {
-            Flight[] flights = mapper.readValue(jsonInputStream, Flight[].class);
-            Plan plan = computePlan(flights);
-            return plan2Json(plan);
-        } catch (IOException e) {
-            OptimizeResolver.log.error("Cannot parse input stream", e);
-        }
-        return null;
+    Flight[] getFlights(InputStream jsonInputStream) throws IOException {
+        String contents = new String(ByteStreams.toByteArray(jsonInputStream));
+        log.info("Processing '{}'", contents);
+        return mapper.readValue(contents, Flight[].class);
     }
 
     // FIXME remove this dirty hack use Jackson to do it.
@@ -88,6 +97,7 @@ public class OptimizeResolver {
     @AllArgsConstructor
     public static class Plan {
         private final int gain;
+
         private final List<Flight> path;
     }
 
@@ -96,11 +106,17 @@ public class OptimizeResolver {
     @EqualsAndHashCode(of = "name")
     public static class Flight {
         @JsonProperty("VOL")
+        @Setter(AccessLevel.PACKAGE)
         private String name;
+
         private int depart;
+
         private int duree;
+
         @JsonProperty("PRIX")
+        @Setter(AccessLevel.PACKAGE)
         private int prix;
+
         private transient int end = -1;
 
         public boolean isCompatibleWith(Flight other) {
@@ -108,13 +124,13 @@ public class OptimizeResolver {
         }
 
         @JsonProperty("DEPART")
-        private void setDepart(int depart) {
+        void setDepart(int depart) {
             this.depart = depart;
             computeEnd();
         }
 
         @JsonProperty("DUREE")
-        private void setDuree(int duree) {
+        void setDuree(int duree) {
             this.duree = duree;
             computeEnd();
         }
