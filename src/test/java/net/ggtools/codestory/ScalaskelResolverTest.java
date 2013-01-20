@@ -26,7 +26,9 @@ import static org.junit.Assert.assertThat;
 public class ScalaskelResolverTest {
     @Mock
     private HttpServletRequest request;
+
     private ScalaskelResolver resolver = new ScalaskelResolver();
+
     private ObjectMapper mapper = new ObjectMapper();
 
     @Test

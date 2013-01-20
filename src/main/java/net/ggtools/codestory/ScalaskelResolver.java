@@ -60,6 +60,7 @@ public class ScalaskelResolver implements Resolver {
     protected enum COIN {
         //Foo vaut 1 cent, le Bar vaut 7 cents, le Qix vaut 11 cents et le Baz vaut 21 cents.
         foo(1), bar(7), qix(11), baz(21);
+
         private final int value;
 
         private COIN(int value) {

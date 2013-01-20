@@ -23,6 +23,7 @@ import java.util.Map;
 public class indexServlet extends javax.servlet.http.HttpServlet {
 
     private List<Resolver> resolvers = new ArrayList<Resolver>();
+
     private OptimizeResolver optimizeResolver;
 
     @Override
