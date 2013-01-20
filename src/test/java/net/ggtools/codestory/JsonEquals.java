@@ -15,6 +15,7 @@ import java.io.IOException;
  */
 public class JsonEquals extends TypeSafeMatcher<String> {
     private final String reference;
+
     private ObjectMapper mapper = new ObjectMapper();
 
     public JsonEquals(String reference) {

@@ -26,7 +26,9 @@ public class QuestionResolver implements Resolver {
         MAILING_LIST("Es tu abonne a la mailing list(OUI/NON)", "OUI"),
         EMAIL_ADDRESS("Quelle est ton adresse email", "consulting@labouisse.com"),
         UNKNOWN("", null);
+
         private final String question;
+
         private final String answer;
 
         QUESTION(String question, String answer) {
