@@ -3,12 +3,14 @@ package net.ggtools.codestory.jajascript;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Stopwatch;
-import com.google.common.io.ByteStreams;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * User: Christophe Labouisse
@@ -41,7 +43,7 @@ public class OptimizeResolver {
         for (Flight flight : flights) {
             int wantedIndex = flight.getDepart();
             int maxIndex = flight.getEnd();
-            while(slotList.size() <= maxIndex) {
+            while (slotList.size() <= maxIndex) {
                 slotList.add(new Slot());
             }
             slotList.get(flight.getDepart()).getFlights().add(flight);
@@ -68,8 +70,10 @@ public class OptimizeResolver {
             }
 
             currentSlot.setGain(gain);
-            if (selectedFlight != null) currentSlot.getPath().add(selectedFlight);
-            currentSlot.getPath().addAll(selectedNextSlot.getPath());
+            List<Flight> path = new ArrayList<>(selectedFlight == null ? selectedNextSlot.getPath().size() : selectedNextSlot.getPath().size() + 1);
+            if (selectedFlight != null) path.add(selectedFlight);
+            path.addAll(selectedNextSlot.getPath());
+            currentSlot.setPath(path);
 
             if (currentSlot.getGain() > maxGain) {
                 maxGain = currentSlot.getGain();
@@ -80,10 +84,11 @@ public class OptimizeResolver {
         assert selectedSlot != null;
         return new Plan(maxGain, selectedSlot.getPath());
     }
+
     Flight[] getFlights(InputStream jsonInputStream) throws IOException {
-        String contents = new String(ByteStreams.toByteArray(jsonInputStream));
-        log.info("Processing '{}'", contents);
-        return mapper.readValue(contents, Flight[].class);
+//        String contents = new String(ByteStreams.toByteArray(jsonInputStream));
+//        log.info("Processing '{}'", contents);
+        return mapper.readValue(jsonInputStream, Flight[].class);
     }
 
     // FIXME remove this dirty hack use Jackson to do it.
