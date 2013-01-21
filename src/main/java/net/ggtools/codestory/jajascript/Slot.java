@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -14,7 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 class Slot {
-    private final List<Flight> path = new ArrayList<>();
+    private List<Flight> path = Collections.emptyList();
 
     private final List<Flight> flights = new ArrayList<>();
 
