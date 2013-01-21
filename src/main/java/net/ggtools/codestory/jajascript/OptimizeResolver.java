@@ -29,7 +29,11 @@ public class OptimizeResolver {
             stopwatch.stop(); // optional
             log.info("Computed plan for {} flights in {}", flights.length, stopwatch);
             String answer = plan2Json(plan);
-            log.info("Answer: {}", answer);
+            if (plan.getPath().size() <= 20) {
+                log.info("Answer: {}", answer);
+            } else {
+                log.info("Answer: gain: {}, path: {} flights", plan.getGain(), plan.getPath().size());
+            }
             return answer;
         } catch (IOException e) {
             log.error("Cannot parse input stream", e);
@@ -70,10 +74,8 @@ public class OptimizeResolver {
             }
 
             currentSlot.setGain(gain);
-            List<Flight> path = new ArrayList<>(selectedFlight == null ? selectedNextSlot.getPath().size() : selectedNextSlot.getPath().size() + 1);
-            if (selectedFlight != null) path.add(selectedFlight);
-            path.addAll(selectedNextSlot.getPath());
-            currentSlot.setPath(path);
+            if (selectedFlight != null) currentSlot.setSelectedFlight(selectedFlight);
+            currentSlot.setNextSlot(selectedNextSlot);
 
             if (currentSlot.getGain() > maxGain) {
                 maxGain = currentSlot.getGain();
@@ -82,7 +84,25 @@ public class OptimizeResolver {
         }
 
         assert selectedSlot != null;
-        return new Plan(maxGain, selectedSlot.getPath());
+        // Compute the actual path length to minimize memory consumption.
+        int pathLength = 0;
+        Slot currentSlot = selectedSlot;
+        while (currentSlot != null) {
+            if (currentSlot.getSelectedFlight() != null) {
+                pathLength++;
+            }
+            currentSlot = currentSlot.getNextSlot();
+        }
+        List<Flight> path = new ArrayList<>(pathLength);
+        currentSlot = selectedSlot;
+        while (currentSlot != null) {
+            if (currentSlot.getSelectedFlight() != null) {
+                path.add(currentSlot.getSelectedFlight());
+            }
+            currentSlot = currentSlot.getNextSlot();
+        }
+
+        return new Plan(maxGain, path);
     }
 
     Flight[] getFlights(InputStream jsonInputStream) throws IOException {
