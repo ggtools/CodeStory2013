@@ -17,6 +17,7 @@ public class QuestionResolver implements Resolver {
 
     private enum QUESTION {
 
+        NDELOOF("As tu copie le code de ndeloof(OUI/NON/JE_SUIS_NICOLAS)", "NON"),
         SECOND_MD("As tu bien recu le second enonce(OUI/NON)", "OUI"),
         GOOD_NIGHT("As tu passe une bonne nuit malgre les bugs de l etape precedente(PAS_TOP/BOF/QUELS_BUGS)", "QUELS_BUGS"),
         FIRST_MD("As tu bien recu le premier enonce(OUI/NON)", "OUI"),

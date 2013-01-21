@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Stopwatch;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.InputStream;
@@ -48,20 +47,6 @@ public class OptimizeResolverTest {
     }
 
     @Test
-    @Ignore
-    public void computeManyFlights() throws Exception {
-        InputStream inputStream = getClass().getResourceAsStream("ManyFlights.json");
-        assertThat(inputStream, notNullValue());
-        Stopwatch stopwatch = new Stopwatch().start();
-        Flight[] flights = resolver.getFlights(inputStream);
-        Plan answer = resolver.computePlan(flights);
-        stopwatch.stop();
-        log.info("Computed plan for {} flights in {}", flights.length, stopwatch);
-        log.info("Plan is: {}", answer);
-        assertThat(answer.getGain(), equalTo(88));
-    }
-
-    @Test
     public void computeManyFlights2() throws Exception {
         InputStream inputStream = getClass().getResourceAsStream("ManyFlights.json");
         assertThat(inputStream, notNullValue());
@@ -75,25 +60,16 @@ public class OptimizeResolverTest {
     }
 
     @Test
-    @Ignore
-    public void random() throws Exception {
-        Random random = new Random(666);
-        int count = 150;
-        Flight[] flights = new Flight[count];
-        for (int i = 0; i < count; i++) {
-            Flight flight = new Flight();
-            flights[i] = flight;
-            flight.setName("Flight-" + i);
-            flight.setPrix(random.nextInt(50));
-            flight.setDepart(random.nextInt(24));
-            flight.setDuree(random.nextInt(24 - flight.getDepart()) + 1);
-        }
-        log.info("Flights: {}", Arrays.toString(flights));
+    public void computeMoreThan24Hours() throws Exception {
+        InputStream inputStream = getClass().getResourceAsStream("MoreThan24Hours.json");
+        assertThat(inputStream, notNullValue());
         Stopwatch stopwatch = new Stopwatch().start();
-        Plan answer = resolver.computePlan(flights);
+        Flight[] flights = resolver.getFlights(inputStream);
+        Plan answer = resolver.computePlan2(flights);
         stopwatch.stop();
-        log.info("Computed plan for {} flights in {}", flights.length, stopwatch);
-        log.info("Plan: {}", answer);
+        log.info("Computed plan2 for {} flights in {}", flights.length, stopwatch);
+        log.info("Plan is: {}", answer);
+        assertThat(answer.getGain(), equalTo(102));
     }
 
     @Test

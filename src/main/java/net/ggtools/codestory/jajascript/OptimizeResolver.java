@@ -17,10 +17,6 @@ import java.util.*;
  */
 @Slf4j
 public class OptimizeResolver {
-    public static final int MAX_SLOTS = 24;
-
-    private static final Plan EMPTY_PLAN = new Plan(0, Collections.<Flight>emptyList());
-
     private ObjectMapper mapper = new ObjectMapper();
 
     public String solve(InputStream jsonInputStream) {
@@ -37,24 +33,25 @@ public class OptimizeResolver {
             log.error("Cannot parse input stream", e);
         }
         return null;
-
     }
 
     Plan computePlan2(Flight[] flights) {
-        // TODO make the sumber of slots dynamic
-        // Create slots plus an extra one.
-        Slot[] slots = new Slot[MAX_SLOTS + 1];
-        for (int i = 0; i < slots.length; i++) {
-            slots[i] = new Slot(i);
-        }
+        List<Slot> slotList = new ArrayList<>();
 
         for (Flight flight : flights) {
-            slots[flight.getDepart()].getFlights().add(flight);
+            int wantedIndex = flight.getDepart();
+            int maxIndex = flight.getEnd();
+            while(slotList.size() <= maxIndex) {
+                slotList.add(new Slot());
+            }
+            slotList.get(flight.getDepart()).getFlights().add(flight);
         }
+
+        Slot[] slots = slotList.toArray(new Slot[slotList.size()]);
 
         int maxGain = -1;
         Slot selectedSlot = null;
-        for (int i = MAX_SLOTS - 1; i >= 0; i--) {
+        for (int i = slots.length - 2; i >= 0; i--) {
             Slot currentSlot = slots[i];
             Slot selectedNextSlot = slots[i + 1];
             int gain = selectedNextSlot.getGain();
@@ -80,43 +77,9 @@ public class OptimizeResolver {
             }
         }
 
+        assert selectedSlot != null;
         return new Plan(maxGain, selectedSlot.getPath());
     }
-
-    Plan computePlan(Flight[] flights) {
-        Plan plan = null;
-        for (int i = 0; i < flights.length; i++) {
-            Flight current = flights[i];
-            List<Flight> selectedFlights = new ArrayList<>(flights.length - i);
-            for (int j = i + 1; j < flights.length; j++) {
-                Flight candidate = flights[j];
-                if (current.isCompatibleWith(candidate)) {
-                    selectedFlights.add(candidate);
-                }
-            }
-
-            Plan currentPlan;
-            int gain;
-            if (selectedFlights.isEmpty()) {
-                gain = current.getPrix();
-                currentPlan = new Plan(gain, Arrays.asList(current));
-            } else {
-                Flight[] subArray = selectedFlights.toArray(new Flight[selectedFlights.size()]);
-                currentPlan = computePlan(subArray);
-                gain = current.getPrix() + currentPlan.getGain();
-                List<Flight> path = new ArrayList<>(currentPlan.getPath().size() + 1);
-                path.add(current);
-                path.addAll(currentPlan.getPath());
-                currentPlan = new Plan(gain, path);
-            }
-
-            if (plan == null || plan.getGain() < gain) {
-                plan = currentPlan;
-            }
-        }
-        return plan;
-    }
-
     Flight[] getFlights(InputStream jsonInputStream) throws IOException {
         String contents = new String(ByteStreams.toByteArray(jsonInputStream));
         log.info("Processing '{}'", contents);
