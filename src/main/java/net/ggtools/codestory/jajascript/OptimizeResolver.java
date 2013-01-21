@@ -30,7 +30,9 @@ public class OptimizeResolver {
             Plan plan = computePlan2(flights);
             stopwatch.stop(); // optional
             log.info("Computed plan for {} flights in {}", flights.length, stopwatch);
-            return plan2Json(plan);
+            String answer = plan2Json(plan);
+            log.info("Answer: {}", answer);
+            return answer;
         } catch (IOException e) {
             log.error("Cannot parse input stream", e);
         }
@@ -39,6 +41,7 @@ public class OptimizeResolver {
     }
 
     Plan computePlan2(Flight[] flights) {
+        // TODO make the sumber of slots dynamic
         // Create slots plus an extra one.
         Slot[] slots = new Slot[MAX_SLOTS + 1];
         for (int i = 0; i < slots.length; i++) {
