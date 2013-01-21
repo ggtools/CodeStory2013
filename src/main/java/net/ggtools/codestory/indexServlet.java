@@ -2,6 +2,7 @@ package net.ggtools.codestory;
 
 import com.google.common.io.ByteStreams;
 import lombok.extern.slf4j.Slf4j;
+import net.ggtools.codestory.jajascript.OptimizeResolver;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
