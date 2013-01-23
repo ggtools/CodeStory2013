@@ -60,7 +60,7 @@ public class indexServlet extends javax.servlet.http.HttpServlet {
         }
 
         logRequest(request);
-        String answer = "Unknown request";
+        String answer = null;
         try {
             for (Resolver resolver : resolvers) {
                 log.info("Trying {}", resolver);
@@ -69,6 +69,7 @@ public class indexServlet extends javax.servlet.http.HttpServlet {
                     break;
                 }
             }
+            answer = answer == null ? "Unknown request" : answer;
             response.getOutputStream().println(answer);
         } catch (ResolverException e) {
             log("Cannot solve", e);
