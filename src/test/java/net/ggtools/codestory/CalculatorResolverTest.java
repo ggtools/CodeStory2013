@@ -1,5 +1,6 @@
 package net.ggtools.codestory;
 
+import org.hamcrest.CoreMatchers;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,5 +32,13 @@ public class CalculatorResolverTest {
 
         String answer = resolver.solve(request);
         MatcherAssert.assertThat("No rounding", !answer.endsWith("0000000"));
+    }
+
+    @Test
+    public void solveNoDecimalPart() throws Exception {
+        Mockito.when(request.getParameter(Matchers.eq("q"))).thenReturn("4*1,5");
+
+        String answer = resolver.solve(request);
+        MatcherAssert.assertThat(answer, CoreMatchers.equalTo("6"));
     }
 }
