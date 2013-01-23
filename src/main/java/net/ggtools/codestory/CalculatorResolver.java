@@ -3,6 +3,7 @@ package net.ggtools.codestory;
 import groovy.lang.GroovyShell;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 
 /**
  * User: Christophe Labouisse
@@ -20,8 +21,16 @@ public class CalculatorResolver implements Resolver {
         String expr = q.replace(',', '.').replaceAll(" ", "+");
         try {
             GroovyShell shell = new GroovyShell();
-            Object evaluate = shell.evaluate(expr);
-            return evaluate.toString().replaceAll("\\.0+$", "").replace('.', ',');
+            Object evalResult = shell.evaluate(expr);
+            Object result;
+            if (evalResult instanceof BigDecimal) {
+                BigDecimal bigDecimal = (BigDecimal) evalResult;
+                result = bigDecimal.stripTrailingZeros();
+            } else {
+                result = evalResult;
+            }
+
+            return result.toString().replace('.', ',');
         } catch (Exception e) {
             return null;
         }
