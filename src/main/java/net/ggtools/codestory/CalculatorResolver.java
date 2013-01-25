@@ -3,9 +3,7 @@ package net.ggtools.codestory;
 import groovy.lang.GroovyShell;
 
 import javax.servlet.http.HttpServletRequest;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.Locale;
+import java.math.BigDecimal;
 
 /**
  * User: Christophe Labouisse
@@ -22,9 +20,17 @@ public class CalculatorResolver implements Resolver {
 
         String expr = q.replace(',', '.').replaceAll(" ", "+");
         try {
-            DecimalFormat format = new DecimalFormat("0.##", new DecimalFormatSymbols(Locale.FRENCH));
             GroovyShell shell = new GroovyShell();
-            return format.format(shell.evaluate(expr));
+            Object evalResult = shell.evaluate(expr);
+            Object result;
+            if (evalResult instanceof BigDecimal) {
+                BigDecimal bigDecimal = (BigDecimal) evalResult;
+                result = bigDecimal.stripTrailingZeros();
+            } else {
+                result = evalResult;
+            }
+
+            return result.toString().replace('.', ',');
         } catch (Exception e) {
             return null;
         }
