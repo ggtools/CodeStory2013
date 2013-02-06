@@ -42,67 +42,8 @@ public class OptimizeResolver {
     }
 
     Plan computePlan2(Flight[] flights) {
-        List<Slot> slotList = new ArrayList<>();
-
-        for (Flight flight : flights) {
-            int wantedIndex = flight.getDepart();
-            int maxIndex = flight.getEnd();
-            while (slotList.size() <= maxIndex) {
-                slotList.add(new Slot());
-            }
-            slotList.get(flight.getDepart()).getFlights().add(flight);
-        }
-
-        Slot[] slots = slotList.toArray(new Slot[slotList.size()]);
-
-        int maxGain = -1;
-        Slot selectedSlot = null;
-        for (int i = slots.length - 2; i >= 0; i--) {
-            Slot currentSlot = slots[i];
-            Slot selectedNextSlot = slots[i + 1];
-            int gain = selectedNextSlot.getGain();
-
-            Flight selectedFlight = null;
-            for (Flight flight : currentSlot.getFlights()) {
-                Slot nextSlot = slots[flight.getEnd()];
-                int currentGain = flight.getPrix() + nextSlot.getGain();
-                if (currentGain > gain) {
-                    selectedFlight = flight;
-                    gain = currentGain;
-                    selectedNextSlot = nextSlot;
-                }
-            }
-
-            currentSlot.setGain(gain);
-            if (selectedFlight != null) currentSlot.setSelectedFlight(selectedFlight);
-            currentSlot.setNextSlot(selectedNextSlot);
-
-            if (currentSlot.getGain() > maxGain) {
-                maxGain = currentSlot.getGain();
-                selectedSlot = currentSlot;
-            }
-        }
-
-        assert selectedSlot != null;
-        // Compute the actual path length to minimize memory consumption.
-        int pathLength = 0;
-        Slot currentSlot = selectedSlot;
-        while (currentSlot != null) {
-            if (currentSlot.getSelectedFlight() != null) {
-                pathLength++;
-            }
-            currentSlot = currentSlot.getNextSlot();
-        }
-        List<Flight> path = new ArrayList<>(pathLength);
-        currentSlot = selectedSlot;
-        while (currentSlot != null) {
-            if (currentSlot.getSelectedFlight() != null) {
-                path.add(currentSlot.getSelectedFlight());
-            }
-            currentSlot = currentSlot.getNextSlot();
-        }
-
-        return new Plan(maxGain, path);
+        PlanCalculator calculator = new PlanCalculator(flights);
+        return calculator.computePlan();
     }
 
     Flight[] getFlights(InputStream jsonInputStream) throws IOException {
