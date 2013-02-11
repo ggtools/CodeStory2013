@@ -24,23 +24,21 @@ public class Flight {
     @Setter(AccessLevel.PACKAGE)
     private int prix;
 
-    private transient int end = -1;
-
     public boolean isCompatibleWith(Flight other) {
-        return (other.depart >= end) || (other.end <= depart);
+        return (other.depart >= getEnd()) || (other.getEnd() <= depart);
     }
 
     @JsonProperty("DEPART")
     void setDepart(int depart) {
         this.depart = depart;
-        computeEnd();
     }
 
     @JsonProperty("DUREE")
     void setDuree(int duree) {
         this.duree = duree;
-        computeEnd();
     }
 
-    private void computeEnd() {end = this.depart + this.duree;}
+    public int getEnd() {
+        return duree + depart;
+    }
 }

@@ -1,8 +1,9 @@
 package net.ggtools.codestory.jajascript;
 
 import com.google.common.base.Throwables;
-import org.junit.Ignore;
+import net.ggtools.codestory.SlowTests;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -113,26 +114,26 @@ public class PerfTest {
     }
 
     private long testALevel(int level) {
-        PlanCalculator resolver;
-        long startTime;
+        long duration;
         {
             List<Flight> flightList = generate(level);
 //            Flight[] flights = flightList.toArray(new Flight[flightList.size()]);
             System.gc();
-            startTime = System.nanoTime();
-            resolver = new PlanCalculator(flightList);
+            long startTime = System.nanoTime();
+            System.out.println("Creating resolver");
+            PlanCalculator resolver = new PlanCalculator(flightList);
+            System.out.println("Starting computation");
+            resolver.computePlan();
+            duration = System.nanoTime() - startTime;
+            System.out.println("Done computation");
         }
 
-        System.out.println("Starting computation");
-        resolver.computePlan();
-        long duration = System.nanoTime() - startTime;
-        System.out.println("Done computation");
-//        System.gc();
+        System.gc();
         return duration;
     }
 
     @Test
-    @Ignore
+    @Category(SlowTests.class)
     public void testManyLevels() {
         for (int level : levels) {
             long elapsedTime = testALevel(level);

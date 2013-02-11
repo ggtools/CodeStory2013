@@ -14,11 +14,14 @@ public class PlanCalculator {
 
     private final Slot[] slots;
 
+    private final Collection<Flight> flights;
+
     public PlanCalculator(Flight[] flights) {
         this(Arrays.asList(flights));
     }
 
     public PlanCalculator(Collection<Flight> flights) {
+        this.flights = flights;
         int maxIndex = 0;
         for (Flight flight : flights) {
             if (flight.getEnd() > maxIndex) {
@@ -65,8 +68,6 @@ public class PlanCalculator {
                 selectedSlot = currentSlot;
             }
         }
-
-        System.out.println("Got solution");
 
         assert selectedSlot != null;
         // Compute the actual path length to minimize memory consumption.
