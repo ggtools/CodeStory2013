@@ -18,7 +18,7 @@
     <div class="wrapper">
       <header>
         <h1>Codestory2013</h1>
-        <p>Ma participation à CodeStory2013</p>
+        <p>Journal de ma participation à CodeStory2013</p>
         <p class="view"><a href="https://github.com/ggtools/CodeStory2013">View the Project on GitHub <small>ggtools/CodeStory2013</small></a></p>
         <ul>
           <li><a href="https://github.com/ggtools/CodeStory2013/zipball/master">Download <strong>ZIP File</strong></a></li>
@@ -27,7 +27,7 @@
         </ul>
       </header>
       <section>
-        <h3>Au début …</h3>
+        <h2>Au début …</h2>
 
 <p>Il n'y avait rien. Enfin pas complètement rien car il y avait ça :</p>
 
@@ -39,9 +39,51 @@
 
 <p>N'ayant pas <em>a priori</em> trop de temps à consacrer à Code Story j'ai préféré rester dans le classique : Java 7 &amp; Tomcat. Pour l'hébergement, j'avais ouvert un compte sur <a href="http:/www.cloudbees.com/">Cloudbees</a> depuis la présentation de <a href="http://www.loof.fr/">Nicolas De Loof</a> au <a href="http://www.bordeauxjug.org">BordeauxJUG</a> que j'allais pouvoir mettre à contribution.</p>
 
-<h3>Premières questions</h3>
+<h2>Premières questions</h2>
 
-<p>Les premières questions sont simples : une question posée par un <code>GET</code> et un ch'tite réponse en retour (<code>OUI</code> dans une grande majorité de cas en fait). J'ai choisi d'utiliser une enum avec deux attributs. Une Map aurait aussi fait l'affaire mais j'ai été traumatisé par l'implémentation du singleton en utilisant une enum.</p>
+<p>L'implémentation des premières questions se fait rapidement en jetant un coup d'œil sur les logs et en ajoutant le couple question/réponse avant de redéployer. Lorsqu'arrive "<code>Es tu pret a recevoir une enonce au format markdown par http post(OUI/NON)</code>" je pars sur une implémentation minimale ("use the logs Luke" me souffle une petite voix dans ma tête).</p>
+
+<p>Cette première partie ne posa pas de problème &amp; ne fut pas chronophage : jusque là tout va bien …</p>
+
+<h2>L'échoppe de monade sur Scalaskel</h2>
+
+<p>J'ai commencé pour un rapide refactoring pour introduire l'interface <code>Resolver</code>. Ensuite un rapide brainstorming avec moi même pour choisir Jackson pour le formatage du JSon. L'algorithme final est récursif et utilise une enum pour stocker les différentes pièces :</p>
+
+<div class="highlight"><pre><span class="kd">protected</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Map</span><span class="o">&lt;</span><span class="n">COIN</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;&gt;</span> <span class="n">computeChange</span><span class="o">(</span><span class="n">COIN</span> <span class="n">currentCoin</span><span class="o">,</span> <span class="kt">int</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">currentCoin</span><span class="o">.</span><span class="na">getValue</span><span class="o">()</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">Map</span><span class="o">&lt;</span><span class="n">COIN</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span> <span class="n">changeMap</span> <span class="o">=</span> <span class="n">Maps</span><span class="o">.</span><span class="na">newHashMapWithExpectedSize</span><span class="o">(</span><span class="n">COIN</span><span class="o">.</span><span class="na">values</span><span class="o">().</span><span class="na">length</span><span class="o">);</span>
+        <span class="n">addToChange</span><span class="o">(</span><span class="n">currentCoin</span><span class="o">,</span> <span class="n">value</span><span class="o">,</span> <span class="n">changeMap</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">Lists</span><span class="o">.</span><span class="na">newArrayList</span><span class="o">(</span><span class="n">changeMap</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="kt">int</span> <span class="n">maxCoins</span> <span class="o">=</span> <span class="n">value</span> <span class="o">/</span> <span class="n">currentCoin</span><span class="o">.</span><span class="na">getValue</span><span class="o">();</span>
+    <span class="n">List</span><span class="o">&lt;</span><span class="n">Map</span><span class="o">&lt;</span><span class="n">COIN</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;&gt;</span> <span class="n">results</span> <span class="o">=</span> <span class="n">Lists</span><span class="o">.</span><span class="na">newArrayList</span><span class="o">();</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">maxCoins</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+        <span class="n">List</span><span class="o">&lt;</span><span class="n">Map</span><span class="o">&lt;</span><span class="n">COIN</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;&gt;</span> <span class="n">subChanges</span> <span class="o">=</span> <span class="n">computeChange</span><span class="o">(</span><span class="n">COIN</span><span class="o">.</span><span class="na">values</span><span class="o">()[</span><span class="n">currentCoin</span><span class="o">.</span><span class="na">ordinal</span><span class="o">()</span> <span class="o">-</span> <span class="mi">1</span><span class="o">],</span> <span class="n">value</span> <span class="o">-</span> <span class="n">i</span> <span class="o">*</span> <span class="n">currentCoin</span><span class="o">.</span><span class="na">getValue</span><span class="o">());</span>
+        <span class="k">for</span> <span class="o">(</span><span class="n">Map</span><span class="o">&lt;</span><span class="n">COIN</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span> <span class="n">change</span> <span class="o">:</span> <span class="n">subChanges</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">addToChange</span><span class="o">(</span><span class="n">currentCoin</span><span class="o">,</span> <span class="n">i</span><span class="o">,</span> <span class="n">change</span><span class="o">);</span>
+            <span class="n">results</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">change</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">results</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></div>
+
+<p>Déploiement, petits coup d'œil aux logs pour surveiller le passage du robot … <em>yes !</em> il est passé &amp; visiblement mes résultats sont corrects. Et puis arrive ça : <code>1 1</code> … </p>
+
+<h2>Calculatrice</h2>
+
+<p>Solitude, interrogation avant de me rendre compte qu'il fallait regarder la question <strong>avant</strong> décodage du paramètre. J'ai fait deux implémentation de la calculatrice : une première en utilisant <a href="http://www.objecthunter.net/exp4j/index.html">exp4j</a> plutôt que Groovy qui ressemblait à un marteau-pillon pour casser une noix. Ça a marché pas trop mal jusqu'à ça :</p>
+
+<pre><code>((1,1+2)+3,14+4+(5+6+7)+(8+9+10)*4267387833344334647677634)/2*553344300034334349999000
+</code></pre>
+
+<p>Exp4j faisant les calculs avec des doubles j'ai perdu du monde au passage et le robot n'a pas aimé. La solution est bien sûr de passer par <code>BigDecimal</code> mais exp4j n'est malheureusement pas conçu autour d'un pattern visitor donc très très difficile de changer la manière dont sont fait les calculs.</p>
+
+<p>Finalement le marteau-pillon a du bon et Groovy ce sera.</p>
+
+<h2>Jajascript</h2>
+
+<p>Pour le deuxième énoncé je commence par une implémentation récursive et assez naïve (mais qui évite de faire des calculs en double). Les quelques tests donnent des résultats assez satisfaisant en terme de temps de réponse. Le robot étant en RTT le week-end où j'ai codé mon algorithme je me suis lancé confiant dans le codage d'un petit test de performance qui va faire des tests avec un nombre variable de vols. Et là … catastrophe, les temps de réponses deviennent catastrophiques lorsque je dépasse 100 vols. Je ne sais pas encore combien de vols il y aura au maximum mais il va falloir un changement radical d'algorithme. </p>
 
 <h3>Welcome to GitHub Pages.</h3>
 
